@@ -1,4 +1,4 @@
-def take_photo(name='photo.jpg', quality=0.8):
+def take_photo(filename='photo.jpg', quality=0.8):
   from IPython.display import display, Javascript
   from google.colab.output import eval_js
   from base64 import b64decode
@@ -41,10 +41,12 @@ def take_photo(name='photo.jpg', quality=0.8):
     ''')
   display(js)
   data = eval_js('takePhoto({})'.format(quality))
-  binary = b64decode(data.split(',')[1])
-  with open(name, 'wb') as f:
+  image = data["image"]
+  label = data["label"]
+  binary = b64decode(image.split(',')[1])
+  with open(filename, 'wb') as f:
     f.write(binary)
-  return name
+  return filename, label
 
 def recognition(filename, known_face):
   import face_recognition 
