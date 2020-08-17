@@ -54,7 +54,7 @@ def recognition(filename, known_face):
   import numpy as np
   from google.colab.patches import cv2_imshow
   
-  frame = face_recognition.load_image_file(filename)
+  frame = cv2.imread(filename)
   small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
   rgb_small_frame = small_frame[:, :, ::-1]
 
