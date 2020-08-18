@@ -11,10 +11,6 @@ def take_photo(filename='photo.jpg', quality=0.8):
       capture.textContent = '사진캡쳐';
       div.appendChild(capture);
       
-      const input = document.createElement('input');
-      input.placeholder = '이름';
-      div.appendChild(input);
-
       const video = document.createElement('video');
       video.style.display = 'block';
       const stream = await navigator.mediaDevices.getUserMedia({video: true});
@@ -36,17 +32,15 @@ def take_photo(filename='photo.jpg', quality=0.8):
       canvas.getContext('2d').drawImage(video, 0, 0);
       stream.getVideoTracks()[0].stop();
       div.remove();
-      return { image: canvas.toDataURL('image/jpeg', quality), label: input.value };
+      return canvas.toDataURL('image/jpeg', quality);
       }
     ''')
   display(js)
   data = eval_js('takePhoto({})'.format(quality))
-  image = data["image"]
-  label = data["label"]
-  binary = b64decode(image.split(',')[1])
+  binary = b64decode(data.split(',')[1])
   with open(filename, 'wb') as f:
     f.write(binary)
-  return filename, label
+  return filename
 
 def recognition(filename, known_face):
   import face_recognition 
